@@ -79,9 +79,9 @@ new(Name, Type) ->
 	    V = list_to_atom("vertices-" ++ Name),
 	    E = list_to_atom("edges-" ++ Name),
 	    N = list_to_atom("neighbours-" ++ Name),
-	    mnesia:create_table(V, [{type,set},{disk_copies,[node()]}]),
-	    mnesia:create_table(E, [{type,set}, {attributes, record_info(fields, edge)}]),
-	    mnesia:create_table(N, [{type,bag}, {attributes, record_info(fields, neighbour)}]),
+	    {atomic,ok} = mnesia:create_table(V, [{type,set},{disc_copies,[node()]}]),
+	    mnesia:create_table(E, [{type,set},{disc_copies,[node()]}, {attributes, record_info(fields, edge)}]),
+	    mnesia:create_table(N, [{type,bag},{disc_copies,[node()]}, {attributes, record_info(fields, neighbour)}]),
 	    Fun = fun() ->
 			  mnesia:write({N, '$vid', 0}),
 			  mnesia:write({N, '$eid', 0})

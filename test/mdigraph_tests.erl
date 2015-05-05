@@ -9,7 +9,7 @@
 -include_lib("eunit/include/eunit.hrl").
 
 new_test_() ->
-    {setup, fun() -> mnesia:start() end, fun(ok) -> mnesia:stop() end,  
+    {setup, fun() -> mnesia:create_schema([node()]),mnesia:start() end, fun(ok) -> mnesia:stop() end,  
      [
       ?_assertError(badarg, mdigraph:new([bad_type]))
      ]
