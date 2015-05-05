@@ -82,6 +82,7 @@ new(Name, Type) ->
 	    {atomic,ok} = mnesia:create_table(V, [{type,set},{disc_copies,[node()]}]),
 	    mnesia:create_table(E, [{type,set},{disc_copies,[node()]}, {attributes, record_info(fields, edge)}]),
 	    mnesia:create_table(N, [{type,bag},{disc_copies,[node()]}, {attributes, record_info(fields, neighbour)}]),
+      mnesia:wait_for_tables([V,E,N],50),
 	    Fun = fun() ->
 			  mnesia:write({N, '$vid', 0}),
 			  mnesia:write({N, '$eid', 0})
